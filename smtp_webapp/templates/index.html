@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gửi Email</title>
+</head>
+<body>
+    <h2>📤 Gửi Email (Gmail SMTP)</h2>
+    {% if message %}
+        <p style="color:{{ 'green' if success else 'red' }}">{{ message }}</p>
+    {% endif %}
+    <form method="post">
+        <label>Your Gmail:</label><br>
+        <input name="from_email" required><br>
+        <label>App Password:</label><br>
+        <input name="app_password" required><br>
+        <label>To:</label><br>
+        <input name="to_email" required><br>
+        <label>Subject:</label><br>
+        <input name="subject" required><br>
+        <label>Body:</label><br>
+        <textarea name="body" rows="6" cols="50"></textarea><br>
+        <button type="submit">Gửi</button>
+    </form>
+    <hr>
+    <h2>📥 Xem Inbox</h2>
+    <form method="post" action="/inbox">
+        <label>Your Gmail:</label><br>
+        <input name="from_email" required><br>
+        <label>App Password:</label><br>
+        <input name="app_password" required><br>
+        <button type="submit">Xem hộp thư</button>
+    </form>
+</body>
+</html>

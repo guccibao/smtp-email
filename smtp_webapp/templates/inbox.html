@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head><title>Inbox</title></head>
+<body>
+    <h2>📥 Inbox</h2>
+    {% for mail in emails %}
+        <hr>
+        <strong>Subject:</strong> {{ mail.subject }}<br>
+        <strong>From:</strong> {{ mail.from }}<br>
+        <strong>Date:</strong> {{ mail.date }}<br>
+        <pre>{{ mail.body }}</pre>
+    {% endfor %}
+</body>
+</html>
