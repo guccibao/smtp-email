@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Inbox - Gmail Mini</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .glass {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-purple-100 to-indigo-100 min-h-screen p-6">
+    <div class="max-w-5xl mx-auto">
+        <h1 class="text-4xl font-bold text-indigo-800 text-center mb-10">📨 Hộp Thư Gmail Mini</h1>
+
+        {% if emails %}
+        <div class="space-y-4">
+            {% for mail in emails %}
+            <div class="glass p-5 rounded-lg border-l-4 border-indigo-500 shadow hover:shadow-lg transition">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold text-gray-800">📧 {{ mail.subject }}</h2>
+                    <a href="/email/{{ mail.uid }}" class="text-indigo-600 text-sm underline">Xem chi tiết →</a>
+                </div>
+                <p class="text-sm text-gray-600 mt-1">👤 <strong>From:</strong> {{ mail.from }}</p>
+                <p class="text-sm text-gray-600">🕒 <strong>Date:</strong> {{ mail.date }}</p>
+                <p class="text-sm text-gray-700 mt-2 line-clamp-3">{{ mail.body[:200] }}...</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-center text-gray-600">Không có email nào.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

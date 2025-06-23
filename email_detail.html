@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết email</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        iframe {
+            height: calc(100vh - 300px);
+        }
+        .dark-mode {
+            background-color: #1a202c;
+            color: #e2e8f0;
+        }
+        .dark-mode .bg-white {
+            background-color: #2d3748;
+        }
+        .dark-mode a {
+            color: #63b3ed;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen transition-colors" id="body">
+    <div class="w-full h-full bg-white rounded-none shadow-none p-6">
+        <div class="flex justify-between items-center">
+            <h1 class="text-4xl font-bold text-blue-800 dark:text-blue-300 mb-4">📧 {{ mail.subject }}</h1>
+            <div class="flex gap-2">
+                <button onclick="toggleDarkMode()" class="px-4 py-2 bg-gray-800 text-white rounded">🌓 Chế độ tối</button>
+                <button onclick="printEmail()" class="px-4 py-2 bg-yellow-500 text-white rounded">🖨️ In</button>
+                <button onclick="downloadPDF()" class="px-4 py-2 bg-green-600 text-white rounded">📄 Tải PDF</button>
+            </div>
+        </div>
+        <p class="text-base text-gray-600 dark:text-gray-300 mb-1"><strong>From:</strong> {{ mail.from }}</p>
+        <p class="text-base text-gray-600 dark:text-gray-300 mb-4"><strong>Date:</strong> {{ mail.date }}</p>
+        <hr class="my-4">
+        <iframe id="emailFrame" class="w-full border rounded" srcdoc="{{ mail.body | replace('"', '&quot;') | safe }}"></iframe>
+        <div class="mt-6 flex gap-4">
+            <a href="/reply/{{ mail.uid }}" class="px-6 py-3 bg-blue-600 text-white rounded-lg text-lg">✉️ Trả lời</a>
+            <a href="/delete/{{ mail.uid }}" class="px-6 py-3 bg-red-500 text-white rounded-lg text-lg">🗑️ Xoá</a>
+            <a href="/inbox" class="text-blue-500 hover:underline text-base">← Quay lại hộp thư</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleDarkMode() {
+            document.getElementById("body").classList.toggle("dark-mode");
+        }
+
+        function printEmail() {
+            const iframe = document.getElementById("emailFrame");
+            const win = iframe.contentWindow;
+            win.focus();
+            win.print();
+        }
+
+        async function downloadPDF() {
+            const {{ jsPDF }} = window.jspdf;
+            const doc = new jsPDF();
+            const text = `Subject: {{ mail.subject }}\nFrom: {{ mail.from }}\nDate: {{ mail.date }}\n\n{{ mail.body | striptags }}`;
+            doc.text(text, 10, 10);
+            doc.save("email.pdf");
+        }
+    </script>
+</body>
+</html>
